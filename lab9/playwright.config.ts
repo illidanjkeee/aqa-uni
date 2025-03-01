@@ -13,6 +13,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
+  timeout: 30 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -26,48 +27,61 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
+    baseURL: 'https://playwright.dev/',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    /* Capture screenshot only on failure */
+    screenshot: 'only-on-failure',
   },
 
   /* Configure projects for major browsers */
   projects: [
+    // Unit tests
     {
-      name: 'chromium',
+      name: 'unit',
+      testDir: './tests/unit',
+      testMatch: /.*\.spec\.ts/,
+    },
+    
+    // API tests
+    {
+      name: 'api',
+      testDir: './tests/api',
+      testMatch: /.*\.spec\.ts/,
+    },
+    
+    // UI tests - Chromium
+    {
+      name: 'ui-chromium',
+      testDir: './tests/ui',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: /.*\.spec\.ts/,
     },
-
+    
+    // E2E tests - Chromium
     {
-      name: 'firefox',
+      name: 'e2e-chromium',
+      testDir: './tests/e2e',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /.*\.spec\.ts/,
+    },
+    
+    // You can add more browser configurations for UI and E2E tests
+    {
+      name: 'ui-firefox',
+      testDir: './tests/ui',
       use: { ...devices['Desktop Firefox'] },
+      testMatch: /.*\.spec\.ts/,
     },
-
+    
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: 'e2e-firefox',
+      testDir: './tests/e2e',
+      use: { ...devices['Desktop Firefox'] },
+      testMatch: /.*\.spec\.ts/,
     },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
   /* Run your local dev server before starting the tests */
