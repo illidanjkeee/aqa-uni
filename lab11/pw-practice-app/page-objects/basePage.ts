@@ -22,12 +22,5 @@ export class BasePage {
   async navigateToHome() {
     await this.navigateTo('/');
   }
-  
-//   /**
-//    * Wait for navigation to complete
-//    * @param url The expected URL
-//    */
-//   async waitForUrl(url: string) {
-//     await this.page.waitForURL(`${BASE_URL}${url}`);
 //   }
 }

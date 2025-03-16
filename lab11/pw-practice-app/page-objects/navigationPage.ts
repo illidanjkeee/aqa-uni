@@ -10,8 +10,5 @@ export class NavigationPage extends BasePage {
     // Assuming there's a menu item or link to click
     await this.page.getByText('Forms').click();
     await this.page.getByText('Form Layouts').click();
-    // await this.waitForUrl(ROUTES.FORM_LAYOUTS);
   }
-  
-  // Add other navigation methods
 }
